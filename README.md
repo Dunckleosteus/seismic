@@ -82,6 +82,20 @@ In1  = impedance_matrix[1:, :] # n
 reflection_coeff = (In1 - I) / (In1 + I)
 plt.imshow(reflection_coeff)
 ```
+Given two matrices, one row is removed from both the top and bottom of each matrix. After this trimming, the remaining pixels are compared pairwise across corresponding rows and columns to analyze the differences or patterns between them. The result is presented in picture below: 
 
-A single row is trimmed off each matrix because when comparing rows amongst each other
+![image](https://github.com/user-attachments/assets/dcb81bd3-e252-4f7e-87df-5b756caf2495)
+
+Compared to previous plots, the reflection coefficient highlights differences in accoustic impedance between cells. The vertical differences in each column vertically can be represented vertically with a fishbone plot : 
+
+![image](https://github.com/user-attachments/assets/d2ff703a-2986-4f64-9853-df4845bf1358)
+
+
+The plot was obtained with the following code : 
+
+```python
+plt.stem(reflection_coeff[:, 1], orientation='horizontal')
+plt.gca().invert_yaxis()
+```
+Were we can see, from the numpy index, that it represents the second row column from the left.
 
