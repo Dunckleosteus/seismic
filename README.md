@@ -83,4 +83,5 @@ reflection_coeff = (In1 - I) / (In1 + I)
 plt.imshow(reflection_coeff)
 ```
 
-A single row is trimmed off each matrix because when comparing rows amongst each other 
+A single row is trimmed off each matrix because when comparing rows amongst each other
+
