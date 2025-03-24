@@ -49,11 +49,31 @@ array.shape
 The various "bands" can then be visualized with numpy indexing as illustrated in the table below : 
 
 
-|Index|Output|
-|---|---|
-|  plt.imshow(np.flip(array[0, :, :])) | ![image](https://github.com/user-attachments/assets/2a8e0e20-60a4-411d-ae7d-4531fd7f1b76) |
-|  plt.imshow(np.flip(array[1, :, :])) | ![image](https://github.com/user-attachments/assets/cec5818c-1c58-4e53-991f-7ae678ffb560) |
-|  plt.imshow(np.flip(array[2, :, :])) | ![image](https://github.com/user-attachments/assets/0121a06f-c5e8-499d-b08b-870181a90b01) |
-|  plt.imshow(np.flip(array[3, :, :])) | ![image](https://github.com/user-attachments/assets/fe55fd4b-6144-4525-84b8-de802d47688f) |
+|Name|Index|Output|
+|---|---|---|
+| RHOB | plt.imshow(np.flip(array[0, :, :])) | ![image](https://github.com/user-attachments/assets/2a8e0e20-60a4-411d-ae7d-4531fd7f1b76) |
+| VPH | plt.imshow(np.flip(array[1, :, :])) | ![image](https://github.com/user-attachments/assets/cec5818c-1c58-4e53-991f-7ae678ffb560) |
+| X | plt.imshow(np.flip(array[2, :, :])) | ![image](https://github.com/user-attachments/assets/0121a06f-c5e8-499d-b08b-870181a90b01) |
+| Y | plt.imshow(np.flip(array[3, :, :])) | ![image](https://github.com/user-attachments/assets/fe55fd4b-6144-4525-84b8-de802d47688f) |
 
+## Accoustic impedance
+The formula for accoustic impedance is :
+$$I_i=\rho_i \times v_i$$
+
+So to calculate it, we simply need to multiply the first layer (np.flip(array[0, :, :])) in array to the second one (np.flip(array[0, :, :])).
+```python
+impedance_matrix = array[0, :, :] * array[1, :, :]
+plt.imshow(impedance_matrix)
+plt.title("Accoustic impedance")
+```
+The result is as follows: 
+
+![image](https://github.com/user-attachments/assets/23d26aad-7f7e-4e5e-a19a-6082bba6e3b2)
+> Note that it's basically a copy of VPH because RHOB is constant.
+
+## Reflection coefficient
+$$R_o=\frac{I_{i+1}-I_i}{I_{i+1}+I_i}$$
+Where I is the impedance calculated above.
+
+This operation is 1D and is deployed on vertical axis. Here are vertical axis is represented by y.
 
