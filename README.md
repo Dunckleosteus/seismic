@@ -197,3 +197,6 @@ Here a linear interpolator is being used. As illustrated in the table below, the
 |Wiggle plot|Contour plot|Heatmap|
 |---|---|---|
 | ![image](https://github.com/user-attachments/assets/c96b2331-74f1-44e1-980a-864a1f8d4d95) | ![image](https://github.com/user-attachments/assets/187f4b17-b2c8-4054-9ff2-ad8e768db830) | ![image](https://github.com/user-attachments/assets/9a38d195-135c-47e5-875f-994d39fc01a0) |
+
+![image](https://github.com/user-attachments/assets/01e8399f-2c2a-455a-92ed-aed1c3d95f79)
+
