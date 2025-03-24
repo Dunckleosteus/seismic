@@ -99,3 +99,34 @@ plt.gca().invert_yaxis()
 ```
 Were we can see, from the numpy index, that it represents the second row column from the left.
 
+# Wavelet
+The goal here is to create a wavelet to convolve with the reflectivity data. To this end the bruges package is used. To install it in collab : 
+```
+!pip install bruges
+```
+Then : 
+```python
+import bruges.filters as bf
+```
+## Creating wavelet
+Following this, a function was created to facilitate wavelet creation : 
+```python
+def create_wavelet(offset, amplitude, length=0.256, frequency=40, sample_intervall=0.01):
+  w, t = bf.ricker(length, sample_intervall, frequency)
+  t += offset
+  w *= amplitude
+  return w,t
+```
+... 
+whith which a wavelet was defined and plotted :
+
+![image](https://github.com/user-attachments/assets/36927dc1-d3d8-4383-b16c-7e84995c26fd)
+
+With the following code: 
+```python
+w, t = create_wavelet(1.5, 0.2, sample_intervall=0.001)
+plt.plot(w, t)
+plt.scatter(w,t )
+```
+## Wavelet convolution
+
