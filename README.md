@@ -75,5 +75,12 @@ The result is as follows:
 $$R_o=\frac{I_{i+1}-I_i}{I_{i+1}+I_i}$$
 Where I is the impedance calculated above.
 
-This operation is 1D and is deployed on vertical axis. Here are vertical axis is represented by y.
+To acheive this in python, we use the `np.roll` tool to create a second matrix offset vertically : 
+```python
+I     = np.roll(impedance_matrix, shift=1, axis=0)[:-1, :] # n+1
+In1  = impedance_matrix[1:, :] # n
+reflection_coeff = (In1 - I) / (In1 + I)
+plt.imshow(reflection_coeff)
+```
 
+A single row is trimmed off each matrix because when comparing rows amongst each other 
