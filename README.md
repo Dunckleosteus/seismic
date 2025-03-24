@@ -169,7 +169,31 @@ These steps are then implemented into a for loop to apply it to each column of r
 ![image](https://github.com/user-attachments/assets/664416a4-4762-44bb-8df2-1f096f1885b5)
 
 Applied to all outputs, the results are as follows : 
+![image](https://github.com/user-attachments/assets/da7333cb-bb16-4992-ae3a-e839b298eceb)
 
-![image](https://github.com/user-attachments/assets/f3d5d126-0eed-4dfd-9c6f-bb95886de219)
+## Interpolation
+The convoluded data can be discretized as a series of points :
+![image](https://github.com/user-attachments/assets/e005f20e-bf53-4a1f-b457-8bdfb0db34fc)
 
+A surface is then fitted to these points using `scipy.interpolate.griddata` : 
+```python
+from scipy.interpolate import interp1d
+from scipy.interpolate import griddata
 
+# Create an interpolation function
+x = df['x'].values
+time = df['time'].values
+amplitude = df['amplitude'].values
+
+# Create a grid of points for interpolation
+xi = np.linspace(x.min(), x.max(), 100)
+ti = np.linspace(time.min(), time.max(), 100)
+xi, ti = np.meshgrid(xi, ti)
+
+zi = griddata((x, time), amplitude, (xi, ti), method='linear')
+```
+Here a linear interpolator is being used. As illustrated in the table below, the resulting seismic panel can be represented throug various plots : 
+
+|Wiggle plot|Contour plot|Heatmap|
+|---|---|---|
+| ![image](https://github.com/user-attachments/assets/c96b2331-74f1-44e1-980a-864a1f8d4d95) | ![image](https://github.com/user-attachments/assets/187f4b17-b2c8-4054-9ff2-ad8e768db830) | ![image](https://github.com/user-attachments/assets/9a38d195-135c-47e5-875f-994d39fc01a0) |
