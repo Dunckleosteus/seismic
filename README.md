@@ -198,6 +198,44 @@ Here a linear interpolator is being used. As illustrated in the table below, the
 |---|---|---|
 | ![image](https://github.com/user-attachments/assets/c96b2331-74f1-44e1-980a-864a1f8d4d95) | ![image](https://github.com/user-attachments/assets/187f4b17-b2c8-4054-9ff2-ad8e768db830) | ![image](https://github.com/user-attachments/assets/9a38d195-135c-47e5-875f-994d39fc01a0) |
 
+
+### Conversion to distance
+When creating the dataframe for interpolation, the original x and y values where appended. These are used to plot in distance, using the original x/y data. By simply changing columns used for plotting to depth, the plots presented above can easily be converted to depth. 
+Below is the interpolation with distance instead of time : 
+```python
+from scipy.interpolate import interp1d
+from scipy.interpolate import griddata
+
+# Create an interpolation function
+x_dist = df['x'].values
+time = df['dept'].values  # TODO: change variable name
+amplitude = df['amplitude'].values
+
+# Create a grid of points for interpolation
+xi_dist = np.linspace(x_dist.min(), x_dist.max(), 100)
+ti_dist = np.linspace(time.min(), time.max(), 100)
+xi_dist, ti_dist = np.meshgrid(xi_dist, ti_dist)
+
+# Perform the 2D interpolation
+zi_dist = griddata((x_dist, time), amplitude, (xi_dist, ti_dist), method='linear')
+
+plt.figure(figsize=(10, 6))
+for i in range(zi_dist.shape[1]):
+    plt.plot(zi_dist[:, i] + i, ti_dist[:, i], 'k')
+    plt.fill_betweenx(ti_dist[:, i], zi_dist[:, i] + i, i, where=(zi_dist[:, i] > 0), color='black')
+
+plt.xlabel('X')
+plt.ylabel('Depth [m]')
+plt.title('Seismic Trace Wiggle Plot')
+plt.gca().invert_yaxis()  # Invert y-axis to match seismic trace convention
+plt.show()
+```
+And here are plots generated from this interpolation : 
+
+|Wiggle plot|Contour plot|Heatmap|
+|---|---|---|
+| ![image](https://github.com/user-attachments/assets/8b5a3927-723b-4cdc-91f2-5f263b3164e7) | ![image](https://github.com/user-attachments/assets/c04649a0-ca31-4cc6-90c6-f94674cb60cd) | ![image](https://github.com/user-attachments/assets/e6293089-1913-472f-9e5e-4c94df8cf382) |
+
 # Recap plot
 ![image](https://github.com/user-attachments/assets/01e8399f-2c2a-455a-92ed-aed1c3d95f79)
 
