@@ -71,6 +71,13 @@ The result is as follows:
 ![image](https://github.com/user-attachments/assets/23d26aad-7f7e-4e5e-a19a-6082bba6e3b2)
 > Note that it's basically a copy of VPH because RHOB is constant.
 
+## Conversion to time domain 
+Conversion from distance to time was acheived with the following code : 
+```python
+time_matrix = (0.2 / array[1, :, :])
+time_matrix = np.cumsum(time_matrix, axis=0) * 2
+```
+
 ## Reflection coefficient
 $$R_o=\frac{I_{i+1}-I_i}{I_{i+1}+I_i}$$
 Where I is the impedance calculated above.
@@ -129,4 +136,40 @@ plt.plot(w, t)
 plt.scatter(w,t )
 ```
 ## Wavelet convolution
+To convolove the wavelet with the fishbones, 2 functions were defined : 
+```python
+def expand_with_zeros(arr, target_length): #fill des valeurs manquantes par des 0 pour ne pas modifier la données
+    if len(arr) == target_length:
+        return arr
+    new_arr = np.zeros(target_length)
+    indices = np.linspace(0, target_length - 1, len(arr), dtype=int)            # create correct size matrix of 0
+    for i, index in enumerate(indices):                                         # fill the matrix with values of initial matrix @ correct index
+        new_arr[index] = arr[i]
+    return list(new_arr)
+
+```
+And 
+```python
+def equalize_arrays(arr1, arr2): #faire en sorte que les deux arrays aient le meme nombre de points
+    max_length = max(len(arr1), len(arr2))
+
+    arr1_expanded = expand_with_zeros(arr1, max_length)
+    arr2_expanded = expand_with_zeros(arr2, max_length)
+
+    return arr1_expanded, arr2_expanded
+```
+They are used to ensure that wavelet array is of compatible dimension with fishbone so as to use `np.convolve` function. Here is application : 
+```python
+rc2, w2 = equalize_arrays(rc, w)
+syn = np.convolve(rc2, w2, mode='same')
+```
+
+These steps are then implemented into a for loop to apply it to each column of reflectivity matrix. Here is an output example for a single column : 
+
+![image](https://github.com/user-attachments/assets/664416a4-4762-44bb-8df2-1f096f1885b5)
+
+Applied to all outputs, the results are as follows : 
+
+![image](https://github.com/user-attachments/assets/f3d5d126-0eed-4dfd-9c6f-bb95886de219)
+
 
